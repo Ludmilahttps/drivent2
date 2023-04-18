@@ -12,10 +12,6 @@ async function createPayment({ ticketId, cardData, value }: PaymentInfoType & { 
   });
 }
 
-async function findPayments() {
-  return await prisma.payment.findMany();
-}
-
 async function getPayments() {
   return await prisma.payment.findMany();
 }
@@ -23,7 +19,6 @@ async function getPayments() {
 const paymentsRepository = {
   createPayment,
   getPayments,
-  findPayments,
 };
 
 export default paymentsRepository;

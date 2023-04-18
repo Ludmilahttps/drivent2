@@ -17,7 +17,7 @@ export async function createTicket(_req: AuthenticatedRequest, res: Response) {
             TicketType: { ...typeResponse },
         });
     } catch (error) {
-        return res.sendStatus(httpStatus.NOT_FOUND);
+        return res.status(httpStatus.NOT_FOUND).send({});
     }
 }
 
@@ -28,7 +28,7 @@ export async function getTickets(_req: AuthenticatedRequest, res: Response) {
         if (!tickets) throw new Error();
         return res.status(httpStatus.OK).send(tickets);
     } catch (error) {
-        return res.sendStatus(httpStatus.NOT_FOUND);
+        return res.status(httpStatus.NOT_FOUND).send({});
     }
 }
 
@@ -37,6 +37,6 @@ export async function getTicketsTypes(_req: AuthenticatedRequest, res: Response)
         const ticketsTypes = await ticketsService.getTicketsTypes();
         return res.status(httpStatus.OK).send(ticketsTypes);
     } catch (error) {
-        return res.sendStatus(httpStatus.NOT_FOUND);
+        return res.status(httpStatus.NOT_FOUND).send({});
     }
 }

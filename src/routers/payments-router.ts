@@ -7,6 +7,6 @@ const paymentsRouter = Router();
 
 paymentsRouter.all('/*', authenticateToken);
 paymentsRouter.get('/', findPayments);
-paymentsRouter.post('/process', validateBody(createPaymentSchema));
+paymentsRouter.post('/process', validateBody(createPaymentSchema), createPayment);
 
 export { paymentsRouter };
