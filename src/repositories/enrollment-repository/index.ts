@@ -24,9 +24,9 @@ async function upsert(
   });
 }
 
-async function findEnrollment(userId: number): Promise<Enrollment> {
+async function findEnrollment(id: number): Promise<Enrollment> {
   return prisma.enrollment.findUnique({
-    where: { userId },
+    where: { id },
   });
 }
 
