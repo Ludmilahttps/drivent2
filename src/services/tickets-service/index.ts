@@ -9,7 +9,7 @@ type CreateTicketType = {
 
 async function createTicket(ticket: CreateTicketType) {
     const { ticketTypeId, userId } = ticket;
-    const { id: enrollmentId } = await enrollmentRepository.findEnrollment(userId);
+    const { id: enrollmentId } = await enrollmentRepository.findEnrollmentByUserId(userId);
     if (!enrollmentId) throw notFoundError();
     const response = await ticketRepository.createTicket({ ticketTypeId, enrollmentId });
     if (!response) throw notFoundError();
@@ -21,7 +21,7 @@ async function getTicketType(ticketTypeId: number) {
 }
 
 async function getTickets(userId: number) {
-    const { id: enrollmentId } = await enrollmentRepository.findEnrollment(userId);
+    const { id: enrollmentId } = await enrollmentRepository.findEnrollmentByUserId(userId);
     if (!enrollmentId) throw notFoundError();
     return await ticketRepository.getTickets();
 }

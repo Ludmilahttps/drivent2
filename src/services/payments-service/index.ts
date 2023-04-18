@@ -14,7 +14,7 @@ type CreatePaymentType = {
 async function findPayments({ userId, ticketId }: FindPaymentsType) {
     const ticket = await ticketRepository.getTicket(ticketId);
     if (!ticket) throw notFoundError();
-    const enrollment = await enrollmentRepository.findEnrollment(ticket.enrollmentId);
+    const enrollment = await enrollmentRepository.findEnrollmentById(ticket.enrollmentId);
     if (!enrollment) throw notFoundError();
     if (enrollment.userId !== userId) throw unauthorizedError();
 
@@ -27,7 +27,7 @@ async function createPayment({ paymentInfo, userId }: CreatePaymentType) {
     if (!ticket) throw notFoundError();
 
     const ticketType = await ticketRepository.findTicketType(ticket.ticketTypeId);
-    const enrollment = await enrollmentRepository.findEnrollment(ticket.enrollmentId);
+    const enrollment = await enrollmentRepository.findEnrollmentById(ticket.enrollmentId);
 
     if (!enrollment) throw notFoundError();
     if (enrollment.userId !== userId) throw unauthorizedError();
