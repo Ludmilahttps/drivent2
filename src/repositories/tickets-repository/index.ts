@@ -6,8 +6,17 @@ async function findTicketTypes(): Promise<TicketType[]> {
   return prisma.ticketType.findMany();
 }
 
-async function findTicketByEnrollmentId(enrollmentId: number) {
-  return await prisma.ticket.findFirst({ where: { enrollmentId } });
+async function findTicketByEnrollmentId(enrollmentId: number): Promise<
+  Ticket & {
+    TicketType: TicketType;
+  }
+> {
+  return prisma.ticket.findFirst({
+    where: { enrollmentId },
+    include: {
+      TicketType: true,
+    },
+  });
 }
 
 async function createTicket(ticket: CreateTicketParams) {
@@ -25,10 +34,6 @@ async function findTickeyById(ticketId: number) {
       Enrollment: true,
     },
   });
-}
-
-async function findTicketTypeById(ticketTypeId: number) {
-  return await prisma.ticketType.findFirst({ where: { id: ticketTypeId } });
 }
 
 async function findTickeWithTypeById(ticketId: number) {
@@ -60,5 +65,4 @@ export default {
   findTickeyById,
   findTickeWithTypeById,
   ticketProcessPayment,
-  findTicketTypeById,
 };

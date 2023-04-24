@@ -9,6 +9,8 @@ export function handleApplicationErrors(
   _next: NextFunction,
 ) {
 
+  console.log(err.name);
+  
   if (err.name === 'TicketTypeError' || err.name === 'TicketPaidError') {
     return res.status(httpStatus.PAYMENT_REQUIRED).send({
       message: err.message,

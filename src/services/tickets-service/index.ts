@@ -32,6 +32,7 @@ async function createTicket(userId: number, ticketTypeId: number): Promise<Ticke
   };
 
   await ticketsRepository.createTicket(ticketData);
+
   const ticket = await ticketsRepository.findTicketByEnrollmentId(enrollment.id);
 
   return ticket;

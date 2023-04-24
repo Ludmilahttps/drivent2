@@ -20,6 +20,7 @@ export async function getTickets(req: AuthenticatedRequest, res: Response, next:
     const ticket = await ticketService.getTicketByUserId(userId);
     return res.status(httpStatus.OK).send(ticket);
   } catch (e) {
+    console.log(e);
     next(e);
   }
 }
@@ -32,6 +33,7 @@ export async function createTicket(req: AuthenticatedRequest, res: Response, nex
     const ticket = await ticketService.createTicket(userId, ticketTypeId);
     return res.status(httpStatus.CREATED).send(ticket);
   } catch (e) {
+    console.log(e);
     next(e);
   }
 }
