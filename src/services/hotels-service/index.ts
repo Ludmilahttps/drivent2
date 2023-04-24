@@ -1,6 +1,6 @@
 import hotelRepository from "@/repositories/hotel-repository";
 import { notFoundError } from '@/errors';
-import { ticketTypeError } from '@/errors/ticket-type-error';
+import { ticketTypeError } from '@/errors/ticket-error';
 import enrollmentRepository from '@/repositories/enrollment-repository';
 import ticketsRepository from "@/repositories/tickets-repository";
 
