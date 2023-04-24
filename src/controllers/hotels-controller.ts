@@ -11,6 +11,7 @@ export async function findHotels(req: AuthenticatedRequest, res: Response) {
     if (!hotels) throw new Error();
     return res.status(httpStatus.OK).send(hotels);
   } catch (error) {
+    console.log(error)
     return res.status(httpStatus.NOT_FOUND).send({});
   }
 }
@@ -23,6 +24,7 @@ export async function findRooms(req: AuthenticatedRequest, res: Response) {
     if (!hotelRooms) throw new Error();
     return res.status(httpStatus.OK).send(hotelRooms);
   } catch (error) {
+    console.log(error)
     return res.status(httpStatus.NOT_FOUND).send({});
   }
 }

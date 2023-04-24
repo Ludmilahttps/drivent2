@@ -6,4 +6,5 @@ export * from './not-found-error';
 export * from './unauthorized-error';
 export * from './request-error';
 export * from './bad-request-error';
-export * from './ticket-error';
+export * from './ticket-paid-error';
+export * from './ticket-type-error';

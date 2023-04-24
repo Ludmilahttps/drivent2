@@ -6,10 +6,3 @@ export function ticketPaidError(): ApplicationError {
     message: 'Ticket is not paid!',
   };
 }
-
-export function ticketTypeError(): ApplicationError {
-  return {
-    name: 'TicketTypeIsNotRemoteError',
-    message: 'Ticket type must be remote!',
-  };
-}
