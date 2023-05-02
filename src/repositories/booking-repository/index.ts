@@ -25,14 +25,6 @@ async function findBookingByUserId(userId: number) {
     });
 }
 
-async function findBookingById(bookingId: number) {
-    return await prisma.booking.findFirst({
-        where: {
-            id: bookingId,
-        },
-    });
-}
-
 async function updateBookingById(bookingId: number, roomId: number) {
     return await prisma.booking.update({
         where: {
@@ -48,6 +40,5 @@ export default {
     findBookingByRoomId,
     createBooking,
     findBookingByUserId,
-    findBookingById,
     updateBookingById,
 };
