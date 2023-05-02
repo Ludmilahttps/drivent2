@@ -5,10 +5,10 @@ Esse projeto é uma implementação de código legado de uma empresa ficticia, t
 
 ### 01 - TypeScript
 
-- Tarefa 1: Implementar a rota `/enrollments/cep` corretamente
+Implementação da rota `/enrollments/cep`
     - A informação do CEP é enviada por query parameters, no formato `cep=xxxxxxx`, por exemplo: `/enrollments/cep?cep=1234081`
-    - Esta rota deve usar a API do [ViaCEP](https://viacep.com.br/) para buscar as informações sobre o endereço que será fornecido pelo usuário no cadastro através do CEP.
-        - A API retornará um JSON com vários dados. A função deve tratar esta resposta e retornar somente os dados conforme o exemplo abaixo:
+    - Esta rota usa API do [ViaCEP](https://viacep.com.br/) para buscar as informações sobre o endereço que será fornecido pelo usuário no cadastro através do CEP.
+        - A API retornará um JSON com vários dados. A função trata esta resposta e retorna somente os dados conforme o exemplo abaixo:
             
             ```jsx
             {
@@ -20,26 +20,20 @@ Esse projeto é uma implementação de código legado de uma empresa ficticia, t
             };
             ```
             
-        - Existem dois cenários de erros que precisam ser tratados:
-            - Formato Inválido: A API responderá com status 400. Lance um erro.
-            - Válido, mas inexistente: Neste caso, a API retornará:
+        - Existem dois cenários de erros que são tratados:
+            - Formato Inválido: A API responde com status 400.
+            - Válido, mas inexistente: Neste caso, a API retorna: "erro": "true"
                 
-                ```sql
-                {
-                  "erro": "true"
-                }
-                ```
-                
-            - Lance um erro (fica a seu critério, recomendamos criar um tipo novo).
-        - Ambos os erros serão tratados nas funções do controller de enrollment. **Não há necessidade de alterá-los no momento para tratar os erros.**
-- Tarefa 2: Ajustar a função `createOrUpdateEnrollmentWithAddress`
-    - Use o código da tarefa 1 para verificar se o CEP é válido antes de criar ou atualizar uma enrollment. Caso não seja, a operação não pode ser concluída.
+        - Ambos os erros são tratados nas funções do controller de enrollment. 
+
+- Ajuste da função `createOrUpdateEnrollmentWithAddress`
+    - Verificamos se o CEP é válido antes de criar ou atualizar uma enrollment. Caso não seja, a operação não pode ser concluída.
 
 ### 02 - Prisma
 
-- Implementar as rotas de tickets e payments.
-    - **🔐** Todas as rotas são autenticadas.
-    - Todas as rotas devem responder status `401 (Unauthorized)` caso falhe a autenticação (faremos isso por uma questão de facilidade).
+- Implementação das rotas de tickets e payments.
+    - Todas as rotas são autenticadas.
+    - Todas as rotas respondem status `401 (Unauthorized)` caso falhe a autenticação.
 - **GET** `/tickets/types`
     - Retorna todos os tipos de ingresso (`TicketType`) cadastrados no sistema.
     - Retorno com todos os tipos de ingresso cadastrados
@@ -71,8 +65,7 @@ Esse projeto é uma implementação de código legado de uma empresa ficticia, t
 - **GET** `/tickets`
     - Retorna todos os ingressos (`Ticket`) do usuário.
     - Com base na regra de negócio atual, o usuário terá apenas um Ticket.
-    - Retorno do ingresso do usuário
-        - Status: `200`
+    - Retorna do ingresso do usuário: Status: `200`
         - Response
             
             ```jsx
@@ -95,10 +88,9 @@ Esse projeto é uma implementação de código legado de uma empresa ficticia, t
             }
             ```
             
-    - Retorno para usuário sem cadastro/inscrição
-        - Status: ****`404`
-    - Retorno para usuário sem ingresso
-        - Status: `404`
+    - Retorna para usuário sem cadastro/inscrição: Status: ****`404`
+    - Retorna para usuário sem ingresso: Status: `404`
+
 - **POST** `/tickets`
     - Cria no sistema um novo ingresso (`Ticket`) para o usuário.
     - body
@@ -107,8 +99,7 @@ Esse projeto é uma implementação de código legado de uma empresa ficticia, t
         { ticketTypeId: number }
         ```
         
-    - Retorno para criação do ingresso bem sucedida
-        - Status: `201`
+    - Retorna para criação do ingresso bem sucedida: Status: `201`
         - Response:
         
         ```jsx
@@ -131,14 +122,12 @@ Esse projeto é uma implementação de código legado de uma empresa ficticia, t
         }
         ```
         
-    - Retorno para usuário sem cadastro
-        - Status: `404`
-    - Retorno quando informação do `ticketTypeId` não é enviada
-        - Status: `400`
+    - Retorna para usuário sem cadastro: Status: `404`
+    - Retorna quando informação do `ticketTypeId` não é enviada: Status: `400`
+
 - **GET:**`/payments?ticketId=1`
     - Retorna informações sobre o pagamento (`Payment`) de um ingresso (`Ticket`).
-    - Retorno de sucesso
-        - Status: `200`
+    - Retorna de sucesso: Status: `200`
         - Response
             
             ```jsx
@@ -153,12 +142,10 @@ Esse projeto é uma implementação de código legado de uma empresa ficticia, t
             }
             ```
             
-    - Retorno quando o `ticketId` não é enviado como parâmetro
-        - Status: `400`
-    - Retorno quando o `ticketId` não existe
-        - Status: `404`
-    - Retorno quando o `ticketId` não está associado ao usuário
-        - Status: `401`
+    - Retorna quando o `ticketId` não é enviado como parâmetro: Status: `400`
+    - Retorna quando o `ticketId` não existe: Status: `404`
+    - Retorna quando o `ticketId` não está associado ao usuário: Status: `401`
+
 - **POST** `/payments/process`
     - Realiza o pagamento (`Payment`) de um ingresso (`Ticket`).
     - Body
@@ -176,8 +163,7 @@ Esse projeto é uma implementação de código legado de uma empresa ficticia, t
         }
         ```
         
-    - Retorno de sucesso
-        - Status: `200`
+    - Retorna de sucesso: Status: `200`
         - Response
             
             ```jsx
@@ -192,18 +178,15 @@ Esse projeto é uma implementação de código legado de uma empresa ficticia, t
             }
             ```
             
-    - Retorno quando não existe `cardData` e/ou `ticketId` no `body`
-        - Status: `400`
-    - Retorno quando `ticketId` não existe
-        - Status: `404`
-    - Retorno quando usuário não possui o `ticketId`
-        - Status: `401`
+    - Retorna quando não existe `cardData` e/ou `ticketId` no `body`: Status: `400`
+    - Retorna quando `ticketId` não existe: Status: `404`
+    - Retorna quando usuário não possui o `ticketId`: Status: `401`
 
 ### 03 - Tests
 
 - Implementação das seguintes rotas:
     - Todas as rotas são autenticadas.
-    - A listagem só deve funcionar para ambos endpoints se para o respectivo usuário existir uma inscrição com ticket pago, que inclui hospedagem.
+    - A listagem funciona para ambos endpoints se para o respectivo usuário existir uma inscrição com ticket pago, que inclui hospedagem.
         - Não existe (inscrição, ticket ou hotel): `404 (not found)`
         - Ticket não foi pago, é remoto ou não inclui hotel: `402 (payment required)`
         - Outros erros: `400 (bad request)`
@@ -231,15 +214,9 @@ Esse projeto é uma implementação de código legado de uma empresa ficticia, t
           ]
         }
         ```
-        
-- Requisitos:
-    - Testes de integração (quando envolve API e Banco) para todas as rotas implementadas.
-    - Testes precisam validar todos os casos necessários**.**
-    - Dica: Nos testes você precisará, de alguma forma, criar as entidades no banco para poder testá-las. E não será via *seed*!
 
 ### 04 - Unitary Tests
 
-- Nesta semana trabalharemos nas rotas associadas ao booking, ou seja, a reserva de quarto em um hotel.
 - Implementação e respectivos testes das rotas:
     - Todas as rotas são autenticadas.
     - Listar uma reserva (usuário já fez a reserva)
@@ -257,7 +234,7 @@ Esse projeto é uma implementação de código legado de uma empresa ficticia, t
             
         - **Error**: Usuário não tem reserva: Deve retornar status code `404`.
     - Fazer uma reserva
-        - 💼 Regra de negócio: Apenas usuários com ingresso do tipo presencial, com hospedagem e pago podem fazer reservas.
+        - Regra de negócio: Apenas usuários com ingresso do tipo presencial, com hospedagem e pago podem fazer reservas.
         - **POST**: `/booking`
             
             body: 
