@@ -8,15 +8,6 @@ export function handleApplicationErrors(
   res: Response,
   _next: NextFunction,
 ) {
-
-  console.log(err.name);
-  
-  if (err.name === 'TicketTypeError' || err.name === 'TicketPaidError') {
-    return res.status(httpStatus.PAYMENT_REQUIRED).send({
-      message: err.message,
-    });
-  }
-
   if (err.name === 'CannotEnrollBeforeStartDateError') {
     return res.status(httpStatus.BAD_REQUEST).send({
       message: err.message,
@@ -42,6 +33,12 @@ export function handleApplicationErrors(
   }
 
   if (err.name === 'NotFoundError') {
+    return res.status(httpStatus.NOT_FOUND).send({
+      message: err.message,
+    });
+  }
+
+  if (err.name === 'CannotListHotelsError') {
     return res.status(httpStatus.NOT_FOUND).send({
       message: err.message,
     });

@@ -11,7 +11,7 @@ export async function createHotel() {
   });
 }
 
-export async function createRoom(hotelId: number) {
+export async function createRoomWithHotelId(hotelId: number) {
   return prisma.room.create({
     data: {
       name: '1020',
