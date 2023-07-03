@@ -5,14 +5,18 @@ import httpStatus from 'http-status';
 import * as jwt from 'jsonwebtoken';
 import supertest from 'supertest';
 
-import { createEnrollmentWithAddress, createUser, createAddressWithCEP } from '../factories';
+import { createEnrollmentWithAddress, createUser, createhAddressWithCEP as createAddressWithCEP } from '../factories';
 import { cleanDb, generateValidToken } from '../helpers';
 import { prisma } from '@/config';
-import app, { init } from '@/app';
+import app, { init, close } from '@/app';
 
 beforeAll(async () => {
   await init();
   await cleanDb();
+});
+
+afterAll(async () => {
+  await close();
 });
 
 const server = supertest(app);
@@ -90,7 +94,6 @@ describe('GET /enrollments/cep', () => {
 
   it('should respond with status 204 when CEP is invalid', async () => {
     const response = await server.get('/enrollments/cep?cep=00');
-
     expect(response.status).toBe(httpStatus.NO_CONTENT);
   });
 });
@@ -196,7 +199,7 @@ describe('POST /enrollments', () => {
         birthday: faker.date.past().toISOString(),
         phone: '(21) 98999-9999',
         address: {
-          cep: '0',
+          cep: '00000-000',
           street: faker.address.streetName(),
           city: faker.address.city(),
           number: faker.datatype.number().toString(),
@@ -206,7 +209,7 @@ describe('POST /enrollments', () => {
         },
       });
 
-      it('should respond with status 400 and create new enrollment if there is not any', async () => {
+      it('should respond with status 400', async () => {
         const body = generateInvalidBody();
         const token = await generateValidToken();
 
