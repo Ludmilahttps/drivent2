@@ -9,6 +9,10 @@ async function findPaymentByTicketId(ticketId: number) {
   });
 }
 
+async function findPayments() {
+  return await prisma.payment.findMany();
+}
+
 async function createPayment(ticketId: number, params: PaymentParams) {
   return prisma.payment.create({
     data: {
@@ -18,4 +22,4 @@ async function createPayment(ticketId: number, params: PaymentParams) {
   });
 }
 
-export default { findPaymentByTicketId, createPayment };
+export default { findPaymentByTicketId, createPayment, findPayments};

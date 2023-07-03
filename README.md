@@ -1,14 +1,14 @@
 # DRIVENT
-Esse projeto é uma implementação de código legado de uma empresa ficticia, todas as features implementadas estão descritas no *about* logo abaixo
+This project is an implementation of legacy code from a fictitious company, all implemented features are described in the *about* just below
 
 ## About
 
 ### 01 - TypeScript
 
-Implementação da rota `/enrollments/cep`
-    - A informação do CEP é enviada por query parameters, no formato `cep=xxxxxxx`, por exemplo: `/enrollments/cep?cep=1234081`
-    - Esta rota usa API do [ViaCEP](https://viacep.com.br/) para buscar as informações sobre o endereço que será fornecido pelo usuário no cadastro através do CEP.
-        - A API retornará um JSON com vários dados. A função trata esta resposta e retorna somente os dados conforme o exemplo abaixo:
+route implementation `/enrollments/cep`
+    - CEP information is sent by query parameters, in the format`cep=xxxxxxx`, for example: `/enrollments/cep?cep=1234081`
+    - This route uses API from [ViaCEP](https://viacep.com.br/) to search for information about the address that will be provided by the user in the registration through the zip code.
+        - The API will return a JSON with various data. The function handles this response and returns only the data as shown in the example below:
             
             ```jsx
             {
@@ -20,23 +20,21 @@ Implementação da rota `/enrollments/cep`
             };
             ```
             
-        - Existem dois cenários de erros que são tratados:
-            - Formato Inválido: A API responde com status 400.
-            - Válido, mas inexistente: Neste caso, a API retorna: "erro": "true"
-                
-        - Ambos os erros são tratados nas funções do controller de enrollment. 
+        - There are two error scenarios that are handled:
+            - Invalid Format: The API responds with status 400.
+            - Valid but nonexistent: In this case, the API returns: "error": "true"
 
-- Ajuste da função `createOrUpdateEnrollmentWithAddress`
-    - Verificamos se o CEP é válido antes de criar ou atualizar uma enrollment. Caso não seja, a operação não pode ser concluída.
+- function adjustment `createOrUpdateEnrollmentWithAddress`
+    - We verify that the zip code is valid before creating or updating an enrollment. If not, the operation cannot be completed.
 
 ### 02 - Prisma
 
-- Implementação das rotas de tickets e payments.
-    - Todas as rotas são autenticadas.
-    - Todas as rotas respondem status `401 (Unauthorized)` caso falhe a autenticação.
+- Implementation of ticket and payment routes.
+    - All routes are authenticated.
+    - All routes respond with status `401 (Unauthorized)` if authentication fails.
 - **GET** `/tickets/types`
-    - Retorna todos os tipos de ingresso (`TicketType`) cadastrados no sistema.
-    - Retorno com todos os tipos de ingresso cadastrados
+    - Returns all ticket types (`TicketType`) registered in the system.
+    - Return with all types of registered tickets
         - Status: **`200`**
         - Response
             
@@ -54,18 +52,12 @@ Implementação da rota `/enrollments/cep`
             ]
             ```
             
-    - Retorno sem os tipos de ingresso (não existe cadastrado no sistema ainda)
-        - Status: **`200`**
-        - Response:
-            
-            ```jsx
-            []
-            ```
+    - Return without ticket types (there is no record in the system yet): Status: **`200`**
             
 - **GET** `/tickets`
-    - Retorna todos os ingressos (`Ticket`) do usuário.
-    - Com base na regra de negócio atual, o usuário terá apenas um Ticket.
-    - Retorna do ingresso do usuário: Status: `200`
+    - Returns all tickets (`Ticket`) for the user.
+    - Based on the current business rule, the user will only have one Ticket.
+    - Returns from user ticket: Status: `200`
         - Response
             
             ```jsx
@@ -88,18 +80,18 @@ Implementação da rota `/enrollments/cep`
             }
             ```
             
-    - Retorna para usuário sem cadastro/inscrição: Status: ****`404`
-    - Retorna para usuário sem ingresso: Status: `404`
+    - Returns to user without registration/registration: Status: `404`
+    - Returns to user without ticket: Status: `404`
 
 - **POST** `/tickets`
-    - Cria no sistema um novo ingresso (`Ticket`) para o usuário.
+    - Creates a new ticket (`Ticket`) for the user in the system.
     - body
         
         ```jsx
         { ticketTypeId: number }
         ```
         
-    - Retorna para criação do ingresso bem sucedida: Status: `201`
+    - Returns on successful ticket creation: Status: `201`
         - Response:
         
         ```jsx
@@ -122,12 +114,12 @@ Implementação da rota `/enrollments/cep`
         }
         ```
         
-    - Retorna para usuário sem cadastro: Status: `404`
-    - Retorna quando informação do `ticketTypeId` não é enviada: Status: `400`
+    - Returns to user without registration: Status: `404`
+    - Returns when `ticketTypeId` information is not sent: Status: `400`
 
 - **GET:**`/payments?ticketId=1`
-    - Retorna informações sobre o pagamento (`Payment`) de um ingresso (`Ticket`).
-    - Retorna de sucesso: Status: `200`
+    - Returns payment information (`Payment`) for a ticket (`Ticket`).
+    - Returns success: Status: `200`
         - Response
             
             ```jsx
@@ -142,12 +134,12 @@ Implementação da rota `/enrollments/cep`
             }
             ```
             
-    - Retorna quando o `ticketId` não é enviado como parâmetro: Status: `400`
-    - Retorna quando o `ticketId` não existe: Status: `404`
-    - Retorna quando o `ticketId` não está associado ao usuário: Status: `401`
+    - Returns when `ticketId` is not sent as a parameter: Status: `400`
+    - Returns when `ticketId` does not exist: Status: `404`
+    - Returns when `ticketId` is not associated with the user: Status: `401`
 
 - **POST** `/payments/process`
-    - Realiza o pagamento (`Payment`) de um ingresso (`Ticket`).
+    - Makes the payment (`Payment`) of a ticket (`Ticket`).
     - Body
         
         ```jsx
@@ -163,7 +155,7 @@ Implementação da rota `/enrollments/cep`
         }
         ```
         
-    - Retorna de sucesso: Status: `200`
+    - Returns success: Status: `200`
         - Response
             
             ```jsx
@@ -178,21 +170,20 @@ Implementação da rota `/enrollments/cep`
             }
             ```
             
-    - Retorna quando não existe `cardData` e/ou `ticketId` no `body`: Status: `400`
-    - Retorna quando `ticketId` não existe: Status: `404`
-    - Retorna quando usuário não possui o `ticketId`: Status: `401`
+    - Returns when there is no `cardData` and/or `ticketId` in the `body`: Status: `400`
+    - Returns when `ticketId` does not exist: Status: `404`
+    - Returns when user does not have the `ticketId`: Status: `401`
 
 ### 03 - Tests
 
-- Implementação das seguintes rotas:
-    - Todas as rotas são autenticadas.
-    - A listagem funciona para ambos endpoints se para o respectivo usuário existir uma inscrição com ticket pago, que inclui hospedagem.
-        - Não existe (inscrição, ticket ou hotel): `404 (not found)`
-        - Ticket não foi pago, é remoto ou não inclui hotel: `402 (payment required)`
-        - Outros erros: `400 (bad request)`
-    - Para esta tarefa, considere a relação de 1:1 entre usuário → `Enrollment` e `Ticket`, ou seja, o usuário terá apenas uma inscrição e um ingresso (atualmente o repository já faz isso). No modelo no schema/banco está diferente.
-    - **GET**: `/hotels` → Listar todos os hotéis.
-    - **GET**: `/hotels/:hotelId` → Listar os quartos do hotel.
+- Implementation of the routes:
+    - All routes are authenticated.
+    - The listing works for both endpoints if the respective user has a subscription with a paid ticket, which includes hosting.
+        - Does not exist (registration, ticket or hotel): `404 (not found)`
+        - Ticket was not paid, is remote or does not include hotel: `402 (payment required)`
+        - Other errors: `400 (bad request)`
+    - **GET**: `/hotels` → List all hotels.
+    - **GET**: `/hotels/:hotelId` → List hotel rooms.
         
         ```jsx
         //retorno de Rooms com Hotel (include Rooms em Hotel)
@@ -217,13 +208,13 @@ Implementação da rota `/enrollments/cep`
 
 ### 04 - Unitary Tests
 
-- Implementação e respectivos testes das rotas:
-    - Todas as rotas são autenticadas.
-    - Listar uma reserva (usuário já fez a reserva)
+- Route implementation and testing:
+    - All routes are authenticated.
+    - List a reservation (user has already made the reservation)
         
         **GET**: `/booking`
         
-        - **Sucesso**: Deve retornar status code `200` com:
+        - **Success**: Should return status code `200` with:
             
             ```json
             {
@@ -232,9 +223,9 @@ Implementação da rota `/enrollments/cep`
             }
             ```
             
-        - **Error**: Usuário não tem reserva: Deve retornar status code `404`.
-    - Fazer uma reserva
-        - Regra de negócio: Apenas usuários com ingresso do tipo presencial, com hospedagem e pago podem fazer reservas.
+        - **Error**: User has no reservation: Must return statuscode `404`.
+    - Make a reservation
+        - Business rule: Only users with a face-to-face ticket, with accommodation and paid, can make reservations.
         - **POST**: `/booking`
             
             body: 
@@ -245,15 +236,15 @@ Implementação da rota `/enrollments/cep`
             }
             ```
             
-            - **Sucesso**: Deve retornar status code `200` com `bookingId`
+            - **Success**: Should return status code `200` with `bookingId`
             - **Error**:
-                - `roomId` não existente: Deve retornar status code `404`.
-                - `roomId` sem vaga: Deve retornar status code `403`.
-                - Fora da regra de negócio: Deve retornar status code `403`. (ex: usuário não tem nem *booking*.)
-    - Trocar uma reserva
-        - Regra de negócio:
-            - A troca pode ser efetuada para usuários que possuem reservas.
-            - A troca pode ser efetuada apenas para quartos livres.
+                - `roomId` non-existent: Must return status code `404`.
+                - `roomId` no vacancy: Must return status code `403`.
+                - Outside the business rule: Must return status code `403`. 
+    - change a reservation
+        - Business rule:
+            - The exchange can be made for users who have reservations.
+             - The exchange can only be made for free rooms.
         - **PUT**: `/booking/:bookingId`
             
             **body**: 
@@ -264,25 +255,11 @@ Implementação da rota `/enrollments/cep`
             }
             ```
             
-            - Sucesso: Deve retornar status code `200` com `bookingId`
-            - Erro:
-                - `roomId` não existente: Deve retornar status code `404`.
-                - `roomId` sem vaga: Deve retornar status code `403`.
-                - Fora da regra de negócio: Deve retornar status code `403`.
-- Requisitos:
-    - **Métricas de QA (Quality Assurance)**
-        
-        **Cobertura de Testes:** Para verificar a cobertura de testes, execute o comando `test:coverage` do `package.json`. A pasta `coverage/` será gerada. Suba o arquivo `index.html` em um servidor local para fazer a leitura das informações.
-        
-        - **Booking Service:**
-            - *Lines*: ≥ 90%
-            - *Functions*: ≥ 90%
-        - **Booking Controller:**
-            - *Lines*: ≥ 90%
-            - *Functions*: ≥ 90%
-    - Testes de integração (quando envolve API e Banco) para todas as rotas implementadas.
-    - Testes precisam validar todos os casos necessários**.**
-
+            - Success: Should return status code `200` with `bookingId`
+            - Error:
+                - `roomId` non-existent: Must return status code `404`.
+                - `roomId` no vacancy: Must return status code `403`.
+                - Outside the business rule: Must return status code `403`.
 
 ## Tecnologies
 This web site is a replica, using the tecnologies:
@@ -415,8 +392,7 @@ There are several things you need to do when you add new ENV VARIABLES:
 - Add them (prod version) to test.yml file on .github/workflows/test.yml.
 
 ## Who
-Ludmila Silveira, 19 years old and a Computer Engineer student at Federal University of Santa Catarina (UFSC).Currently studying to be a full stack developer and this is a learning project.
+Ludmila Silveira, 19 years old, Computer Engineering student at the Federal University of Santa Catarina (UFSC). She is currently attending a full stack development bootcamp and this is a learning project.
 
 ## When
 @date MAI/2023 @copyright Copyright (c) 2023
-
